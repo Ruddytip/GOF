@@ -4,8 +4,7 @@
 
 #include "GameObject.h"
 
-class DynamicObject : public GameObject 
-{
+class DynamicObject : public GameObject{
 public:
 
     DynamicObject() : speed(0.0), xDirction(0.0), yDirection(0) { }

@@ -7,16 +7,15 @@ using namespace std;
 
 //========================================================================================================================
 
+#include <iostream>
 int main(void){
-    MyTools::ScreenSingleton* ScreenInstance = MyTools::ScreenSingleton::getInstance();
     MyTools::LoggerSingleton* log =
         MyTools::LoggerSingleton::getInstance(MyTools::logFile::getInstance());
     // MyTools::OpenLogFile("log.txt");
     log->OpenLogFile("log.txt");
-
     SBomber game;
 
-    do {
+    do{
         game.TimeStart();
 
         if (_kbhit()) game.ProcessKBHit();
@@ -30,7 +29,6 @@ int main(void){
 
         game.TimeFinish();
 
-    } while (!game.GetExitFlag());
-
+    } while(!game.GetExitFlag());
     return 0;
 }
