@@ -6,7 +6,8 @@
 #include "SBomber.h"
 #include "Bomb.h"
 #include "Ground.h"
-#include "Tank.h"
+// #include "Tank.h"
+#include "TankAdapter.hpp"
 #include "House.h"
 #include "commandDeleteObj.hpp"
 #include "commandDropBomb.hpp"
@@ -56,12 +57,12 @@ SBomber::SBomber()
     pGr->SetWidth(width - 2);
     vecStaticObj.push_back(pGr);
 
-    Tank* pTank = new Tank;
+    TankAdapter* pTank = new TankAdapter;
     pTank->SetWidth(13);
     pTank->SetPos(30, groundY - 1);
     vecStaticObj.push_back(pTank);
 
-    pTank = new Tank;
+    pTank = new TankAdapter;
     pTank->SetWidth(13);
     pTank->SetPos(50, groundY - 1);
     vecStaticObj.push_back(pTank);
@@ -173,10 +174,10 @@ void SBomber::CheckDestoyableObjects(Bomb * pBomb){
 
 vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const{
     vector<DestroyableGroundObject*> vec;
-    Tank* pTank;
+    TankAdapter* pTank;
     House* pHouse;
     for (size_t i = 0; i < vecStaticObj.size(); i++){
-        pTank = dynamic_cast<Tank*>(vecStaticObj[i]);
+        pTank = dynamic_cast<TankAdapter*>(vecStaticObj[i]);
         if (pTank != nullptr){
             vec.push_back(pTank);
             continue;
@@ -205,14 +206,14 @@ Ground* SBomber::FindGround() const{
     return nullptr;
 }
 
+#include "BombIterator.hpp"
+
 vector<Bomb*> SBomber::FindAllBombs() const{
     vector<Bomb*> vecBombs;
-
-    for (size_t i = 0; i < vecDynamicObj.size(); i++){
-        Bomb* pBomb = dynamic_cast<Bomb*>(vecDynamicObj[i]);
-        if (pBomb != nullptr){
-            vecBombs.push_back(pBomb);
-        }
+    BombIterator it(vecDynamicObj);
+    for (; it != it.end() ; ++it){
+        Bomb* pBomb = dynamic_cast<Bomb*>(*it);
+        if (pBomb != nullptr) vecBombs.push_back(pBomb);
     }
 
     return vecBombs;
@@ -268,14 +269,14 @@ void SBomber::ProcessKBHit()
 
     case 'b':
         // DropBomb();
-        // commandDropBomb(FindPlane(), vecDynamicObj, &bombsNumber, &score).Execute();
-        commandDropBombDecorator(FindPlane(), vecDynamicObj, &bombsNumber, &score).Execute();
+        commandDropBomb(FindPlane(), vecDynamicObj, &bombsNumber, &score).Execute();
+        // commandDropBombDecorator(FindPlane(), vecDynamicObj, &bombsNumber, &score).Execute();
         break;
 
     case 'B':
         // DropBomb();
-        commandDropBomb(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
-        // commandDropBombDecorator(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
+        // commandDropBomb(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
+        commandDropBombDecorator(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
         break;
 
     default:
