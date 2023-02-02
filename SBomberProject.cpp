@@ -1,5 +1,4 @@
-﻿
-#include <conio.h>
+﻿#include <conio.h>
 #include "MyTools.h"
 #include "SBomber.h"
 
@@ -9,10 +8,7 @@ using namespace std;
 
 #include <iostream>
 int main(void){
-    MyTools::LoggerSingleton* log =
-        MyTools::LoggerSingleton::getInstance(MyTools::logFile::getInstance());
-    // MyTools::OpenLogFile("log.txt");
-    log->OpenLogFile("log.txt");
+    MyTools::LoggerSingleton::getInstance(MyTools::logFile::getInstance())->OpenLogFile("log.txt");
     SBomber game;
 
     do{
@@ -20,8 +16,7 @@ int main(void){
 
         if (_kbhit()) game.ProcessKBHit();
 
-        MyTools::ScreenSingleton* scr = MyTools::ScreenSingleton::getInstance();
-        scr->ClrScr();
+        MyTools::ScreenSingleton::getInstance()->ClrScr();
 
         game.DrawFrame();
         game.MoveObjects();
