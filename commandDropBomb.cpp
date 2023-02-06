@@ -19,7 +19,6 @@ void __fastcall commandDropBomb::Execute(){
     if (*_pBombsNumber > 0){
         MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
         LogInstance->WriteToLog(std::string(__FUNCTION__) + " was invoked");
-        // WriteToLog(string(__FUNCTION__) + " was invoked");
     
         double x = _pPlane->GetX() + 4;
         double y = _pPlane->GetY() + 2;
@@ -51,7 +50,6 @@ void __fastcall commandDropBombDecorator::Execute(){
     if (*_pBombsNumber > 0){
         MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
         LogInstance->WriteToLog(std::string(__FUNCTION__) + " was invoked");
-        // WriteToLog(string(__FUNCTION__) + " was invoked");
     
         double x = _pPlane->GetX() + 4;
         double y = _pPlane->GetY() + 2;

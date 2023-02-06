@@ -11,6 +11,7 @@
 #include "commandDeleteObj.hpp"
 #include "commandDropBomb.hpp"
 #include "BombDecorator.hpp"
+#include "Visitor.hpp"
 
 using namespace std;
 using namespace MyTools;
@@ -87,9 +88,16 @@ SBomber::~SBomber(){
 void SBomber::MoveObjects(){
     MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
     LogInstance->WriteToLog(string(__FUNCTION__) + " was invoked");
+    LogVisitor logVisit;
     for (size_t i = 0; i < vecDynamicObj.size(); i++){
         if (vecDynamicObj[i] != nullptr){
             vecDynamicObj[i]->Move(deltaTime);
+
+            Bomb* pBomb = dynamic_cast<Bomb*>(vecDynamicObj[i]);
+            if(pBomb != nullptr){ logVisit.log(pBomb); continue; }
+
+            Plane* pPlane = dynamic_cast<Plane*>(vecDynamicObj[i]);
+            if(pPlane != nullptr){ logVisit.log(pPlane); continue; }
         }
     }
 };

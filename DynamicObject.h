@@ -11,6 +11,9 @@ public:
 
     inline void SetSpeed(double sp) { speed = sp; }
     inline void SetDirection(double dx, double dy) { xDirction = dx; yDirection = dy; }
+
+    virtual double GetSpeed() const { return speed; }
+    virtual double GetDirection() const { return xDirction; }
     
     virtual void Move(uint16_t time) { x += xDirction * speed * time * 0.001; y += yDirection * speed * time * 0.001; };
 
