@@ -29,7 +29,6 @@ private:
     int16_t score;
 
 public:
-
     SBomber();
     ~SBomber();
     
@@ -43,16 +42,4 @@ public:
     void DrawFrame();
     void MoveObjects();
     void CheckObjects();
-
-    // Ground* find_ground() const { return FindGround(); }
-    // Plane* find_plane() const { return FindPlane(); }
-    // LevelGUI* find_levelGUI() const { return FindLevelGUI(); }
-    // std::vector<DestroyableGroundObject*> find_destoyableGroundObjects() const { return FindDestoyableGroundObjects(); }
-    // std::vector<Bomb*> find_AllBombs() const { return FindAllBombs(); }
-
-    // void setScore(const int16_t scr){ score = scr; }
-    // int16_t getScore() const { return score; }
-
-    // std::vector<DynamicObject*>* getVecDynamicObj(){ return &vecDynamicObj; }
-    // std::vector<GameObject*>* getVecStaticObj(){ return &vecStaticObj; }
 };

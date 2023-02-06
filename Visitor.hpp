@@ -13,6 +13,7 @@ public:
 
 class LogVisitor : public Visitor{
 public:
+    virtual ~LogVisitor(){}
     void log(const Bomb* e) override {
         std::string out = std::string(__FUNCTION__) + " 'Bomb' was invoked";
 
