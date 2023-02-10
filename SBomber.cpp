@@ -1,5 +1,6 @@
 
 #include <conio.h>
+#include <ctime>
 #include <windows.h>
 
 #include "MyTools.h"
@@ -12,6 +13,9 @@
 #include "commandDropBomb.hpp"
 #include "BombDecorator.hpp"
 #include "Visitor.hpp"
+#include "Mediator.hpp"
+#include "PlaneWhitshTrack.hpp"
+#include "DrawPlane.hpp"
 
 using namespace std;
 using namespace MyTools;
@@ -28,12 +32,6 @@ SBomber::SBomber()
 {
     MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
     LogInstance->WriteToLog(string(__FUNCTION__) + " was invoked");
-
-    Plane* p = new Plane;
-    p->SetDirection(1, 0.1);
-    p->SetSpeed(4);
-    p->SetPos(5, 10);
-    vecDynamicObj.push_back(p);
 
     MyTools::ScreenSingleton* scr = MyTools::ScreenSingleton::getInstance();
     LevelGUI* pGUI = new LevelGUI;
@@ -70,6 +68,24 @@ SBomber::SBomber()
     pHouse->SetWidth(13);
     pHouse->SetPos(80, groundY - 1);
     vecStaticObj.push_back(pHouse);
+
+    std::srand(std::time(0));
+    int TypePlane = rand() % 2;
+
+    Plane* p;
+    switch (TypePlane){
+        case 0:  p = new ColorPlane; break;
+        case 1:  p = new BigPlane;   break;
+        // default: p = new Plane;      break;
+    }
+    p->SetDirection(1, 0.1);
+    p->SetSpeed(4);
+    p->SetPos(5, 10);
+    vecDynamicObj.push_back(p);
+
+    // Mediator* dispatcher = new Mediator;
+    // Planetrack* plnT = &Planetrack(p, dispatcher);
+    // dispatcher->AddPlane(plnT);
 }
 
 SBomber::~SBomber(){
@@ -103,7 +119,6 @@ void SBomber::MoveObjects(){
 };
 
 void SBomber::CheckObjects(){
-    MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
     coll_detect.CheckPlaneAndLevelGUI(FindPlane(), FindLevelGUI(), &exitFlag);
     coll_detect.CheckBombsAndGround(FindGround(), FindAllBombs(), vecDynamicObj, FindDestoyableGroundObjects(), vecStaticObj, &score);
 };
@@ -225,8 +240,7 @@ void SBomber::DrawFrame(){
         }
     }
 
-    MyTools::ScreenSingleton* scr = MyTools::ScreenSingleton::getInstance();
-    scr->GotoXY(0, 0);
+    MyTools::ScreenSingleton::getInstance()->GotoXY(0, 0);
     fps++;
 
     FindLevelGUI()->SetParam(passedTime, fps, bombsNumber, score);

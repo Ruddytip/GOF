@@ -1,6 +1,7 @@
 ﻿#include <conio.h>
 #include "MyTools.h"
 #include "SBomber.h"
+#include <windows.h>
 
 using namespace std;
 
@@ -17,8 +18,9 @@ int main(void){
         if (_kbhit()) game.ProcessKBHit();
 
         MyTools::ScreenSingleton::getInstance()->ClrScr();
-
+        
         game.DrawFrame();
+        Sleep(20);
         game.MoveObjects();
         game.CheckObjects();
 
