@@ -3,6 +3,7 @@
 #include <ctime>
 #include <windows.h>
 
+#include "LevelGUI.h"
 #include "MyTools.h"
 #include "SBomber.h"
 #include "Bomb.h"
@@ -16,6 +17,7 @@
 #include "Mediator.hpp"
 #include "PlaneWhitshTrack.hpp"
 #include "DrawPlane.hpp"
+#include "CollisionDetector.hpp"
 
 using namespace std;
 using namespace MyTools;
@@ -45,6 +47,8 @@ SBomber::SBomber()
     pGUI->SetHeight(maxY - 4);
     pGUI->SetFinishX(offset + width - 4);
     vecStaticObj.push_back(pGUI);
+
+    coll_detect = new CollisionDetector;
 
     Ground* pGr = new Ground;
     const uint16_t groundY = maxY - 5;
@@ -99,6 +103,8 @@ SBomber::~SBomber(){
             delete vecStaticObj[i];
         }
     }
+
+    delete coll_detect;
 }
 
 void SBomber::MoveObjects(){
@@ -119,8 +125,8 @@ void SBomber::MoveObjects(){
 };
 
 void SBomber::CheckObjects(){
-    coll_detect.CheckPlaneAndLevelGUI(FindPlane(), FindLevelGUI(), &exitFlag);
-    coll_detect.CheckBombsAndGround(FindGround(), FindAllBombs(), vecDynamicObj, FindDestoyableGroundObjects(), vecStaticObj, &score);
+    coll_detect->CheckPlaneAndLevelGUI(FindPlane(), FindLevelGUI(), &exitFlag);
+    coll_detect->CheckBombsAndGround(FindGround(), FindAllBombs(), vecDynamicObj, FindDestoyableGroundObjects(), vecStaticObj, &score);
 };
 
 vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const{
@@ -224,9 +230,13 @@ void SBomber::ProcessKBHit(){
     }
 }
 
+#include "LogFileRAII.hpp"
+
 void SBomber::DrawFrame(){
-    MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
-    LogInstance->WriteToLog(string(__FUNCTION__) + " was invoked");
+    // MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
+    // LogInstance->WriteToLog(std::string(__FUNCTION__) + " was invoked");
+    LogFileRAII log_RAII("log_RAII.txt");
+    log_RAII.getFile() << std::string(__FUNCTION__) + " was invoked" << std::endl;
 
     for (size_t i = 0; i < vecDynamicObj.size(); i++){
         if (vecDynamicObj[i] != nullptr){

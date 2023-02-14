@@ -1,17 +1,19 @@
 #pragma once
 
-#include <vector>
+#include<vector>
 
-#include "LevelGUI.h"
-#include "Plane.h"
-#include "Bomb.h"
-#include "Ground.h"
-#include "Tank.h"
-#include "CollisionDetector.hpp"
+class CollisionDetector;
+class Ground;
+class Plane;
+class LevelGUI;
+class DestroyableGroundObject;
+class Bomb;
+class DynamicObject;
+class GameObject;
 
 class SBomber{
 private:
-    CollisionDetector coll_detect;
+    CollisionDetector* coll_detect;
 
     Ground* FindGround() const;
     Plane* FindPlane() const;
