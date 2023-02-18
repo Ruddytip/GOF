@@ -6,6 +6,13 @@ class TankAdaptee {
 public:
 
     TankAdaptee() : x(0.0), y(0.0), width(0) { }
+
+    TankAdaptee(const TankAdaptee& h){
+        x = h.x;
+        y = h.y;
+        width = h.width;
+    }
+
     virtual ~TankAdaptee(){}
 
     void Paint() const {
@@ -38,6 +45,13 @@ public:
 
     inline void SetWidth(uint16_t widthN) { width = widthN; }
     inline uint16_t GetWidth() const { return width; }
+
+    TankAdaptee operator=(const TankAdaptee& h){
+        x = h.x;
+        y = h.y;
+        width = h.width;
+        return *this;
+    }
 
 protected:
 

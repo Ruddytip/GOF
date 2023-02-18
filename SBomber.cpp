@@ -80,16 +80,11 @@ SBomber::SBomber()
     switch (TypePlane){
         case 0:  p = new ColorPlane; break;
         case 1:  p = new BigPlane;   break;
-        // default: p = new Plane;      break;
     }
     p->SetDirection(1, 0.1);
     p->SetSpeed(4);
     p->SetPos(5, 10);
     vecDynamicObj.push_back(p);
-
-    // Mediator* dispatcher = new Mediator;
-    // Planetrack* plnT = &Planetrack(p, dispatcher);
-    // dispatcher->AddPlane(plnT);
 }
 
 SBomber::~SBomber(){
@@ -223,6 +218,38 @@ void SBomber::ProcessKBHit(){
     case 'B':
         // commandDropBomb(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
         commandDropBombDecorator(FindPlane(), vecDynamicObj, &bombsNumber, &score, 3, SMALL_CRATER_SIZE).Execute();
+        break;
+
+    // По нажатию на кнопку 'd' клонировать случайный разрушаемый наземный объект
+    // (DestroyableGroundObject) из массива статических объектов
+    case 'd':
+        if(!FindDestoyableGroundObjects().empty()){
+            srand(time(0));
+            const int size = FindDestoyableGroundObjects().size();
+            auto vec = FindDestoyableGroundObjects();
+            auto obj = vec[rand() % size]->clone();
+
+            const uint16_t maxX = MyTools::ScreenSingleton::getInstance()->GetMaxX();
+            const uint16_t y = MyTools::ScreenSingleton::getInstance()->GetMaxY() - 6;
+            uint16_t x;
+
+            while(true){
+                x = rand() % maxX;
+
+                bool flag = true;
+                for(const auto& it : vec){
+                    if(it->isInside(x, y)){
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if(flag) break;
+            }
+
+            obj->SetPos(x, y);
+            vecStaticObj.push_back(obj);
+        }
         break;
 
     default:

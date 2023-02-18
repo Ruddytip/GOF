@@ -14,4 +14,16 @@ public:
     bool isInside(double x1, double x2) const override { return tank.isInRange(x1, x2); }
     inline uint16_t GetScore() const override { return tank.GetScore(); }
     inline void SetWidth(uint16_t widthN) override { tank.SetWidth(widthN); }
+
+    TankAdapter(const TankAdapter& h){
+		x = h.x;
+		y = h.y;
+		width = h.width;
+        tank = h.tank;
+	}
+
+	TankAdapter* clone() const {
+		return new TankAdapter(*this);
+	}
+
 };

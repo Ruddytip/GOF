@@ -4,18 +4,35 @@
 #include "DestroyableGroundObject.h"
 
 class House : public DestroyableGroundObject{
+private:
+	const uint16_t score = 40;
 public:
 	bool __fastcall isInside(double x1, double x2) const override;
 	inline uint16_t GetScore() const override { return score; }
 	virtual void Draw() const override;
 	char look[7][14];
+
 	House(){
 		for(auto i = 0; i < 7; ++i)
 			for(auto j = 0; j < 14; ++j)
 				look[i][j] = ' ';
 	}
-private:
-	const uint16_t score = 40;
+
+	virtual ~House(){}
+
+	House(const House& h){
+		x = h.x;
+		y = h.y;
+		width = h.width;
+
+		for(auto i = 0; i < 7; ++i)
+			for(auto j = 0; j < 14; ++j)
+				look[i][j] = h.look[i][j];
+	}
+
+	House* clone() const {
+		return new House(*this);
+	}
 };
 
 class HouseBuilder{
