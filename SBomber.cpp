@@ -270,3 +270,63 @@ void SBomber::TimeFinish(){
     MyTools::logFile* LogInstance = MyTools::logFile::getInstance();
     LogInstance->WriteToLog(string(__FUNCTION__) + " deltaTime = ", (int)deltaTime);
 }
+
+static const size_t ScrollHeight = 30;
+static const size_t ScrollWidth = 20;
+static const char* ppScroll[ScrollHeight] ={"   Project manager: ",
+                                            "   Ivan Vasilevich  ",
+                                            "                    ",
+                                            "     Developers:    ",
+                                            "   Nikolay Gavrilov ",
+                                            " Dmitriy Sidelnikov ",
+                                            "      Eva Brown     ",
+                                            "                    ",
+                                            "      Designers:    ",
+                                            "   Anna Pachenkova  ",
+                                            "    Elena Shvaiber  ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "        test        ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "                    ",
+                                            "        test        ",
+                                            "                    ",                                            
+                                            "  _______END_______ "};
+
+void SBomber::AnimateScrolling(){
+    MyTools::logFile::getInstance()->WriteToLog(string(__FUNCTION__) + " was invoked");
+    auto scr = MyTools::ScreenSingleton::getInstance();
+    const size_t startX = scr->GetMaxX() / 2 - ScrollWidth / 2;
+    const size_t startY = scr->GetMaxY() + 1;
+    double curPos = 0;
+    system("color 07");
+
+    do {
+        TimeStart();
+        scr->ClrScr();
+
+        for(auto i = 0; i < ScrollHeight; ++i){
+            size_t y = startY + i - curPos;
+            if(y > scr->GetMaxY()) continue;
+            scr->GotoXY(startX, y);
+            std::cout << ppScroll[i];
+        }
+
+        TimeFinish();
+        curPos += deltaTime * 0.003;
+        Sleep(10);
+    } while (!_kbhit() && int(curPos) <= (ScrollHeight + scr->GetMaxY()));
+
+    scr->ClrScr();
+}

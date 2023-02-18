@@ -10,10 +10,7 @@ using namespace MyTools;
 
 void LevelGUI::Draw() const{
     MyTools::ScreenSingleton* scr = MyTools::ScreenSingleton::getInstance();
-    // MyTools::SetColor(CC_White);
     scr->SetColor(CC_White);
-
-    // GotoXY(x, y);
     scr->GotoXY(x, y);
 
     char* buf = new (nothrow) char[width + 1];
@@ -22,31 +19,24 @@ void LevelGUI::Draw() const{
     memset(buf, '+', width);
     buf[width] = '\0';
     cout << buf;
-    // GotoXY(x, y + height);
     scr->GotoXY(x, y + height);
     cout << buf;
     delete [] buf;
     buf = nullptr;
     
     for (size_t i = size_t(y); i < height + y; i++){
-        // GotoXY(x, (double)i);
         scr->GotoXY(x, (double)i);
         cout << "+";
-        // GotoXY(x + width - 1, (double)i);
         scr->GotoXY(x + width - 1, (double)i);
         cout << "+";
     }
 
-    // GotoXY(3, 1);
     scr->GotoXY(3, 1);
     cout << "FramePerSecond: " << static_cast<int>(fps / (passedTime / 1000.0));
-    // GotoXY(25, 1);
     scr->GotoXY(25, 1);
     cout << "PassedTime: " << static_cast<int>(passedTime / 1000.0) << " sec";
-    // GotoXY(46, 1);
     scr->GotoXY(46, 1);
     cout << "BombsNum: " << bombsNumber;
-    // GotoXY(62, 1);
     scr->GotoXY(62, 1);
     cout << "Score: " << score;
 }

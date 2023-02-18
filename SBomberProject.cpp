@@ -23,9 +23,11 @@ int main(void){
         Sleep(20);
         game.MoveObjects();
         game.CheckObjects();
-
         game.TimeFinish();
 
     } while(!game.GetExitFlag());
+
+    game.AnimateScrolling(); // Вызов анимированного скроллинга
+
     return 0;
 }

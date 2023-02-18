@@ -44,4 +44,6 @@ public:
     void DrawFrame();
     void MoveObjects();
     void CheckObjects();
+
+    void AnimateScrolling();
 };
