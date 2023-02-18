@@ -233,6 +233,8 @@ void SBomber::ProcessKBHit(){
             const uint16_t y = MyTools::ScreenSingleton::getInstance()->GetMaxY() - 6;
             uint16_t x;
 
+            long count = 0;
+
             while(true){
                 x = rand() % maxX;
 
@@ -245,6 +247,10 @@ void SBomber::ProcessKBHit(){
                 }
 
                 if(flag) break;
+                if(++count >= 1'000){
+                    delete obj;
+                    return;
+                }
             }
 
             obj->SetPos(x, y);
